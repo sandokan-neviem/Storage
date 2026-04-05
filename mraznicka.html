@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mraznička - Inteligentný zoznam</title>
+    <style>
+        :root { --green: #2ecc71; --dark: #2c3e50; --bg: #f4f7f6; --purple: #9b59b6; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; min-height: 100vh; }
+        .sidebar { width: 250px; background: var(--dark); color: white; padding: 20px; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+        .sidebar h2 { color: var(--green); text-align: center; margin-bottom: 20px; font-size: 1.4rem; }
+        .sidebar a { color: #bdc3c7; text-decoration: none; padding: 15px; border-radius: 10px; }
+        .sidebar a.active { background: var(--green); color: white; font-weight: bold; }
+        .main-content { flex-grow: 1; padding: 30px; }
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; border-left: 5px solid var(--purple); }
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 10px; border-bottom: 1px solid #eee; }
+        .date-text { color: #000; font-weight: 600; margin-right: 20px; font-size: 1.05rem; }
+        .delete-btn { background: #ffeded; color: #e74c3c; border: none; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h2>Inteligentný zoznam</h2>
+        <a href="index.html">Domov</a>
+        <a href="chladnicka.html">Chladnička</a>
+                <a href="mraznicka.html" class="active">Mraznička</a>
+
+        <a href="skrinka.html">Potravinová skrinka</a>
+    </aside>
+    <main class="main-content">
+        <h1>Zoznam v mrazničke</h1>
+        <div id="listContainer"></div>
+    </main>
+    <script>
+        function renderList() {
+            const container = document.getElementById('listContainer');
+            const inv = JSON.parse(localStorage.getItem('pantryDB')) || [];
+            const filtered = inv.filter(i => i.loc === 'mraznicka');
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="card"><p>Mraznička je prázdna.</p></div>';
+                return;
+            }
+            const cats = [...new Set(filtered.map(i => i.cat))];
+            container.innerHTML = '';
+            cats.forEach(c => {
+                let html = `<div class="card"><h3>${c}</h3>`;
+                filtered.filter(i => i.cat === c).forEach(it => {
+                    const dma = it.date.split('-').reverse().join('.');
+                    html += `<div class="item-row"><span style="font-weight:bold; font-size:1.1rem;">${it.name}</span><div style="display:flex; align-items:center;"><span class="date-text">${dma}</span><button class="delete-btn" onclick="removeItem('${it.name}', '${it.date}')">🗑️</button></div></div>`;
+                });
+                html += `</div>`;
+                container.innerHTML += html;
+            });
+        }
+        function removeItem(n, d) {
+            if (!confirm(`Odstrániť ${n}?`)) return;
+            let inv = JSON.parse(localStorage.getItem('pantryDB')) || [];
+            inv = inv.filter(it => !(it.name === n && it.date === d));
+            localStorage.setItem('pantryDB', JSON.stringify(inv));
+            renderList();
+        }
+        window.onload = renderList;
+    </script>
+</body>
+</html>
+
