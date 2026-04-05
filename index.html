@@ -6,86 +6,73 @@
     <title>Inteligentný zoznam - Domov</title>
     <style>
         :root { 
-            --green: #2ecc71; 
-            --dark: #2c3e50; 
-            --bg: #f4f7f6; 
-            --orange: #f39c12; 
-            --red: #e74c3c; 
-            --blue: #3498db;
-            --purple: #9b59b6;
+            --green: #2ecc71; --dark: #2c3e50; --bg: #f4f7f6; 
+            --orange: #f39c12; --red: #e74c3c; 
         }
 
         body { 
-            margin: 0; 
-            font-family: 'Segoe UI', sans-serif; 
-            background: var(--bg); 
-            display: flex; 
-            min-height: 100vh; 
+            margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); 
+            display: flex; min-height: 100vh; flex-direction: row; 
         }
         
-        /* SIDEBAR */
+        /* SIDEBAR - Štandardne pre tablet/PC */
         .sidebar { 
-            width: 250px; 
-            background: var(--dark); 
-            color: white; 
-            padding: 20px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            flex-shrink: 0; 
+            width: 250px; background: var(--dark); color: white; padding: 20px; 
+            display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; 
         }
-        .sidebar h2 { color: var(--green); text-align: center; margin-bottom: 20px; font-size: 1.4rem; }
+        .sidebar h2 { color: var(--green); text-align: center; margin-bottom: 15px; font-size: 1.3rem; }
         .sidebar a { 
-            color: #bdc3c7; 
-            text-decoration: none; 
-            padding: 15px; 
-            border-radius: 10px; 
-            transition: 0.3s; 
+            color: #bdc3c7; text-decoration: none; padding: 12px; 
+            border-radius: 8px; font-size: 0.95rem; transition: 0.3s; 
         }
-        .sidebar a:hover { background: #34495e; color: white; }
         .sidebar a.active { background: var(--green); color: white; font-weight: bold; }
 
         /* OBSAH */
-        .main-content { flex-grow: 1; padding: 30px; overflow-y: auto; }
+        .main-content { flex-grow: 1; padding: 20px; overflow-y: auto; }
         .card { 
-            background: white; 
-            padding: 25px; 
-            border-radius: 15px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-            margin-bottom: 25px; 
+            background: white; padding: 15px; border-radius: 12px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; 
         }
 
         /* KALENDÁR */
-        .cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .cal-nav button { padding: 10px 20px; cursor: pointer; background: white; border: 1px solid #ddd; border-radius: 8px; }
-        
+        .cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .cal-nav h2 { font-size: 1.1rem; margin: 0; }
         .cal-grid { 
-            display: grid; 
-            grid-template-columns: repeat(7, 1fr); 
-            background: #eee; 
-            gap: 1px; 
-            border: 1px solid #eee; 
-            border-radius: 10px; 
-            overflow: hidden; 
+            display: grid; grid-template-columns: repeat(7, 1fr); 
+            background: #eee; gap: 1px; border-radius: 8px; overflow: hidden; 
         }
-        .cal-header { background: #f8f9fa; padding: 15px; text-align: center; font-weight: bold; }
-        
-        .day-box { background: white; min-height: 110px; padding: 8px; display: flex; flex-direction: column; }
-        .day-box.empty { background: #fafafa; }
-        .day-number { font-weight: bold; margin-bottom: 8px; }
+        .cal-header { background: #f8f9fa; padding: 10px 5px; text-align: center; font-weight: bold; font-size: 0.8rem; }
+        .day-box { background: white; min-height: 80px; padding: 4px; display: flex; flex-direction: column; }
+        .day-number { font-weight: bold; font-size: 0.8rem; margin-bottom: 4px; }
         .today { background: #ebfaf1; box-shadow: inset 0 0 0 2px var(--green); }
 
         /* PALIČKY */
-        .dot-container { display: flex; flex-direction: column; gap: 3px; width: 100%; }
-        .dot { height: 7px; border-radius: 4px; cursor: pointer; width: 100%; border: none; }
+        .dot-container { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+        .dot { height: 6px; border-radius: 3px; cursor: pointer; border: none; }
         .dot-green { background: var(--green); }
         .dot-orange { background: var(--orange); }
         .dot-red { background: var(--red); }
 
         /* FORMULÁR */
-        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        input, select, button { padding: 14px; border-radius: 10px; border: 1px solid #ddd; font-size: 1rem; }
-        .save-btn { background: var(--green); color: white; border: none; font-weight: bold; cursor: pointer; grid-column: span 2; }
+        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        input, select, button { padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 0.9rem; }
+        .save-btn { background: var(--green); color: white; border: none; font-weight: bold; grid-column: span 2; }
+
+        /* ----- MOBILNÁ ÚPRAVA (Displej pod 768px) ----- */
+        @media (max-width: 768px) {
+            body { flex-direction: column; } /* Sidebar pôjde hore */
+            .sidebar { 
+                width: 100%; padding: 10px; flex-direction: row; 
+                flex-wrap: wrap; justify-content: center; box-sizing: border-box;
+            }
+            .sidebar h2 { width: 100%; margin-bottom: 5px; font-size: 1.1rem; }
+            .sidebar a { padding: 8px 12px; font-size: 0.85rem; }
+            
+            .main-content { padding: 10px; }
+            .day-box { min-height: 60px; } /* Menšie políčka v kalendári */
+            .grid-form { grid-template-columns: 1fr; } /* Formulár pod sebou */
+            .save-btn { grid-column: span 1; }
+        }
     </style>
 </head>
 <body>
@@ -94,21 +81,17 @@
         <h2>Inteligentný zoznam</h2>
         <a href="index.html" class="active">Domov</a>
         <a href="chladnicka.html">Chladnička</a>
-                <a href="mraznicka.html">Mraznička</a>
-
-        <a href="skrinka.html">Potravinová skrinka</a>
+        <a href="skrinka.html">Skrinka</a>
+        <a href="mraznicka.html">Mraznička</a>
     </aside>
 
     <main class="main-content">
-        <h1>Domov</h1>
-
         <div class="card">
             <div class="cal-nav">
                 <button onclick="changeMonth(-1)">◀</button>
-                <h2 id="monthLabel" style="margin:0;"></h2>
+                <h2 id="monthLabel"></h2>
                 <button onclick="changeMonth(1)">▶</button>
             </div>
-            
             <div class="cal-grid">
                 <div class="cal-header">Po</div><div class="cal-header">Ut</div><div class="cal-header">St</div>
                 <div class="cal-header">Št</div><div class="cal-header">Pi</div><div class="cal-header">So</div><div class="cal-header">Ne</div>
@@ -117,11 +100,10 @@
         </div>
 
         <div class="card">
-            <h3>Pridať novú potravinu</h3>
+            <h3>Pridať potravinu</h3>
             <div class="grid-form">
-                <input type="text" id="name" placeholder="Názov produktu">
+                <input type="text" id="name" placeholder="Názov">
                 <input type="date" id="date">
-                
                 <select id="cat">
                     <option value="Pečivo">Pečivo</option>
                     <option value="Mäso">Mäso</option>
@@ -133,14 +115,12 @@
                     <option value="Šunky">Šunky</option>
                     <option value="Iné">Iné</option>
                 </select>
-
                 <select id="loc">
                     <option value="chladnicka">Chladnička</option>
                     <option value="skrinka">Skrinka</option>
                     <option value="mraznicka">Mraznička</option>
                 </select>
-                
-                <button class="save-btn" onclick="saveItem()">Uložiť do zásob</button>
+                <button class="save-btn" onclick="saveItem()">Uložiť</button>
             </div>
         </div>
     </main>
@@ -153,7 +133,6 @@
             const grid = document.getElementById('calendarDays');
             const label = document.getElementById('monthLabel');
             grid.innerHTML = '';
-
             const year = currDate.getFullYear();
             const month = currDate.getMonth();
             label.innerText = new Intl.DateTimeFormat('sk-SK', { month: 'long', year: 'numeric' }).format(currDate);
@@ -161,8 +140,7 @@
             const firstDay = new Date(year, month, 1).getDay();
             const shift = (firstDay === 0 ? 6 : firstDay - 1);
             const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const today = new Date();
-            today.setHours(0,0,0,0);
+            const today = new Date(); today.setHours(0,0,0,0);
 
             for (let i = 0; i < shift; i++) grid.innerHTML += '<div class="day-box empty"></div>';
 
@@ -177,7 +155,6 @@
                     let color = 'dot-green';
                     if (diffDays <= 2) color = 'dot-red';
                     else if (diffDays <= 5) color = 'dot-orange';
-
                     dotsHtml += `<div class="dot ${color}" onclick="showDetail('${it.name}', '${it.date}')"></div>`;
                 });
 
@@ -197,10 +174,8 @@
             const n = document.getElementById('name').value;
             const d = document.getElementById('date').value;
             if(!n || !d) return alert("Zadaj názov a dátum!");
-            
             inv.push({name:n, date:d, cat:document.getElementById('cat').value, loc:document.getElementById('loc').value});
             localStorage.setItem('pantryDB', JSON.stringify(inv));
-            
             document.getElementById('name').value = '';
             document.getElementById('date').value = '';
             renderCalendar();
@@ -211,4 +186,3 @@
     </script>
 </body>
 </html>
-
